@@ -2,14 +2,15 @@ import csv
 
 class CSV_Util():
 
-    login_data = {}
+    # login_data is a list of dictionaries taken from the csv file
+    login_data = []
 
     def __init__(self):
         f = open("login_data.csv")
         csv_data = csv.DictReader(f)
         print(csv_data)
-        # for row in csv_data:
-        #     self.login_data[row['name']] = row['password']
+        for row in csv_data:
+            self.login_data.append(row)
         f.close()
 
     def add_new_user(self, website, username, password):

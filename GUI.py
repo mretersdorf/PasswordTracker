@@ -1,6 +1,7 @@
 import tkinter as tk
+from PasswordTracker.csvutil import CSV_Util
 
-
+login_data = CSV_Util()
 
 def submit():
     """
@@ -118,6 +119,70 @@ btn_clear = tk.Button(
     command=clear
 )
 btn_clear.pack(side=tk.BOTTOM)
+
+# Data Table
+
+frame_website_header = tk.Frame(master=window)
+frame_website_header.grid(row=3, column=0, padx=5, pady=5)
+
+lbl_website_header = tk.Label(
+    master=frame_website_header,
+    text="Website",
+)
+lbl_website_header.pack(padx=5, pady=5)
+
+frame_username_header = tk.Frame(master=window)
+frame_username_header.grid(row=3, column=1, padx=5, pady=5)
+
+lbl_username_header = tk.Label(
+    master=frame_username_header,
+    text="Username",
+)
+lbl_username_header.pack(padx=5, pady=5)
+
+frame_password_header = tk.Frame(master=window)
+frame_password_header.grid(row=3, column=2, padx=5, pady=5)
+
+lbl_password_header = tk.Label(
+    master=frame_password_header,
+    text="Password",
+)
+lbl_password_header.pack(padx=5, pady=5)
+
+
+r = 4
+for row in login_data.login_data:
+    print(row)
+    frame_list_a = tk.Frame(master=window)
+    frame_list_a.grid(row=r, column=0)
+
+    lbl_website_data = tk.Label(
+        master=frame_list_a,
+        text=row["website"]
+    )
+    lbl_website_data.grid()
+
+    frame_list_b = tk.Frame(master=window)
+    frame_list_b.grid(row=r, column=1)
+
+    lbl_username_data = tk.Label(
+        master=frame_list_b,
+        text=row["username"]
+    )
+    lbl_username_data.grid()
+
+    frame_list_c = tk.Frame(master=window)
+    frame_list_c.grid(row=r, column=2)
+
+    print(row["password"])
+    lbl_password_data = tk.Label(
+        master=frame_list_c,
+        text=row["password"]
+    )
+    lbl_website_data.pack()
+
+    r = r + 1
+
 
 # email = ent_email.get()
 
