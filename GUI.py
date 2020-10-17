@@ -1,11 +1,36 @@
 import tkinter as tk
 
+
+
+def submit():
+    """
+    When the user clicks submit button - gather field values, clear fields, set focus on first field
+    """
+    website = ent_website.get()
+    username = ent_username.get()
+    password = ent_password.get()
+    print("Website: %s     Username: %s      Password: %s" % (website, username, password))
+    clear()
+    ent_website.focus_set()
+
+
+def clear():
+    """
+    When the user clicks the clear button - clear field values and set focus on first field
+    """
+    ent_website.delete(0, tk.END)
+    ent_username.delete(0, tk.END)
+    ent_password.delete(0, tk.END)
+    print("Fields are cleared")
+    ent_website.focus_set()
+
+
 window = tk.Tk()
-window.columnconfigure([0,1,2], weight=1, minsize=30)
-# window.rowconfigure([0, 3], minsize=30)
+window.title("Logins")
+window.columnconfigure([0,1,2], weight=1, minsize=175)
 
 frame_title = tk.Frame(master=window)
-frame_title.grid(row=0, column=1)
+frame_title.grid(row=0, column=0, columnspan=3)
 
 lbl_title = tk.Label(
     master=frame_title,
@@ -72,15 +97,16 @@ ent_password.pack()
 frame_buttons = tk.Frame(master=window, width=200)
 frame_buttons.grid(row=2, column=1, padx=5, pady=5)
 
-btn_ok = tk.Button(
+btn_submit = tk.Button(
     master=frame_buttons,
     text="Submit",
     relief=tk.RAISED,
     borderwidth=5,
     width=20,
     height=2,
+    command=submit
 )
-btn_ok.pack(side=tk.TOP)
+btn_submit.pack(side=tk.TOP)
 
 btn_clear = tk.Button(
     master=frame_buttons,
@@ -89,6 +115,7 @@ btn_clear = tk.Button(
     borderwidth=5,
     width=20,
     height=2,
+    command=clear
 )
 btn_clear.pack(side=tk.BOTTOM)
 
