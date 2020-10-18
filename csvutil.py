@@ -8,7 +8,6 @@ class CSV_Util():
     def __init__(self):
         f = open("login_data.csv")
         csv_data = csv.DictReader(f)
-        print(csv_data)
         for row in csv_data:
             self.login_data.append(row)
         f.close()

@@ -28,7 +28,7 @@ def clear():
 
 window = tk.Tk()
 window.title("Logins")
-window.columnconfigure([0,1,2], weight=1, minsize=175)
+window.columnconfigure([0, 1, 2], weight=1, minsize=175)
 
 frame_title = tk.Frame(master=window)
 frame_title.grid(row=0, column=0, columnspan=3)
@@ -149,10 +149,11 @@ lbl_password_header = tk.Label(
 )
 lbl_password_header.pack(padx=5, pady=5)
 
-
 r = 4
 for row in login_data.login_data:
     print(row)
+
+    # Website
     frame_list_a = tk.Frame(master=window)
     frame_list_a.grid(row=r, column=0)
 
@@ -162,6 +163,7 @@ for row in login_data.login_data:
     )
     lbl_website_data.grid()
 
+    # Username
     frame_list_b = tk.Frame(master=window)
     frame_list_b.grid(row=r, column=1)
 
@@ -171,21 +173,16 @@ for row in login_data.login_data:
     )
     lbl_username_data.grid()
 
-    frame_list_c = tk.Frame(master=window)
-    frame_list_c.grid(row=r, column=2)
+    # Password
+    frame_list_password = tk.Frame(master=window)
+    frame_list_password.grid(row=r, column=2)
 
-    print(row["password"])
     lbl_password_data = tk.Label(
-        master=frame_list_c,
+        master=frame_list_password,
         text=row["password"]
     )
-    lbl_website_data.pack()
+    lbl_password_data.grid()
 
     r = r + 1
-
-
-# email = ent_email.get()
-
-#clear button - entry.delete(0, tk.END)
 
 window.mainloop()
