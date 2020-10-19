@@ -1,5 +1,6 @@
 import tkinter as tk
 from csvutil import CSV_Util
+import functools
 
 login_data = CSV_Util()
 
@@ -15,10 +16,9 @@ def submit():
     for x in login_data.login_data:
         print(x)
     login_data.update_csv()
-    update_rows()
+    display_data_rows(login_data.login_data)
     clear()
     ent_website.focus_set()
-
 
 def clear():
     """
@@ -28,23 +28,89 @@ def clear():
     ent_username.delete(0, tk.END)
     ent_password.delete(0, tk.END)
     print("Fields are cleared")
+    display_data_rows(login_data.login_data)
     ent_website.focus_set()
 
-def delete():
+def delete(row):
     """
     When the user clicks the delete button - clear corresponding row and re-render passwords
     """
     print("Running DELETE ***********")
-    del login_data.login_data[row]
+    print(login_data.login_data[row-4])
+    del login_data.login_data[row-4]
     login_data.update_csv()
+    print("NEW LOGINDATA *******")
     for x in login_data.login_data:
         print(x)
+    display_data_rows(login_data.login_data)
 
-def update_rows():
+def display_data_rows(data):
     """
-    Refresh rows in the data table
+    Display rows of password data
+    data is a list of password data in dictionary format
     """
-    window.update()
+    # delete_data_table()
+    data_table = tk.Frame(master=window)
+    data_table.grid(row=4, column=0, columnspan=3)
+    r = 4
+    for row in data:
+        print(row)
+
+        # Website
+        frame_list_a = tk.Frame(master=window)
+        frame_list_a.grid(row=r, column=0)
+
+        lbl_website_data = tk.Label(
+            master=frame_list_a,
+            text=row["website"]
+        )
+        lbl_website_data.grid()
+
+        # Username
+        frame_list_b = tk.Frame(master=window)
+        frame_list_b.grid(row=r, column=1)
+
+        lbl_username_data = tk.Label(
+            master=frame_list_b,
+            text=row["username"]
+        )
+        lbl_username_data.grid()
+
+        # Password
+        frame_list_password = tk.Frame(master=window)
+        frame_list_password.grid(row=r, column=2)
+
+        lbl_password_data = tk.Label(
+            master=frame_list_password,
+            text=row["password"]
+        )
+        lbl_password_data.grid()
+
+        # Delete button
+        frame_delete_button = tk.Frame(master=window)
+        frame_delete_button.grid(row=r, column=3)
+
+        btn_delete = tk.Button(
+            master=frame_delete_button,
+            text="Delete",
+            relief=tk.RAISED,
+            borderwidth=5,
+            width=15,
+            height=1,
+            command=functools.partial(delete, r)
+        )
+        # btn_delete.pack(side=tk.LEFT)
+        btn_delete.grid()
+        r = r + 1
+
+
+def delete_data_table():
+    """
+    Destroys data table so that the new table can be built successfully
+    """
+
+
+
 
 window = tk.Tk()
 window.title("Logins")
@@ -168,58 +234,9 @@ lbl_password_header = tk.Label(
     text="Password",
 )
 lbl_password_header.pack(padx=5, pady=5)
+#
+# data_table = tk.Frame(master=window)
+# data_table.grid(row=4, column=0, columnspan=4)
 
-# ---------- Data Table ---------------------------------------------------
-
-r = 4
-for row in login_data.login_data:
-    print(row)
-
-    # Website
-    frame_list_a = tk.Frame(master=window)
-    frame_list_a.grid(row=r, column=0)
-
-    lbl_website_data = tk.Label(
-        master=frame_list_a,
-        text=row["website"]
-    )
-    lbl_website_data.grid()
-
-    # Username
-    frame_list_b = tk.Frame(master=window)
-    frame_list_b.grid(row=r, column=1)
-
-    lbl_username_data = tk.Label(
-        master=frame_list_b,
-        text=row["username"]
-    )
-    lbl_username_data.grid()
-
-    # Password
-    frame_list_password = tk.Frame(master=window)
-    frame_list_password.grid(row=r, column=2)
-
-    lbl_password_data = tk.Label(
-        master=frame_list_password,
-        text=row["password"]
-    )
-    lbl_password_data.grid()
-
-    # Delete button
-    frame_delete_button = tk.Frame(master=window)
-    frame_delete_button.grid(row=r, column=3)
-
-    btn_delete = tk.Button(
-    master=frame_delete_button,
-    text="Delete",
-    relief=tk.RAISED,
-    borderwidth=5,
-    width=15,
-    height=1,
-    command=delete
-    )
-    btn_delete.pack(side=tk.LEFT)
-
-    r = r + 1
-
+display_data_rows(login_data.login_data)
 window.mainloop()
