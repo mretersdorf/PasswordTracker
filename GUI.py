@@ -1,5 +1,5 @@
 import tkinter as tk
-from PasswordTracker.csvutil import CSV_Util
+from csvutil import CSV_Util
 
 login_data = CSV_Util()
 
@@ -10,7 +10,12 @@ def submit():
     website = ent_website.get()
     username = ent_username.get()
     password = ent_password.get()
-    print("Website: %s     Username: %s      Password: %s" % (website, username, password))
+    print("Website: %s     Username: %s      Password: %s -- \nNew login_data: " % (website, username, password))
+    login_data.add_new_password(website, username, password)
+    for x in login_data.login_data:
+        print(x)
+    login_data.update_csv()
+    update_rows()
     clear()
     ent_website.focus_set()
 
@@ -25,6 +30,21 @@ def clear():
     print("Fields are cleared")
     ent_website.focus_set()
 
+def delete():
+    """
+    When the user clicks the delete button - clear corresponding row and re-render passwords
+    """
+    print("Running DELETE ***********")
+    del login_data.login_data[row]
+    login_data.update_csv()
+    for x in login_data.login_data:
+        print(x)
+
+def update_rows():
+    """
+    Refresh rows in the data table
+    """
+    window.update()
 
 window = tk.Tk()
 window.title("Logins")
@@ -120,7 +140,7 @@ btn_clear = tk.Button(
 )
 btn_clear.pack(side=tk.BOTTOM)
 
-# Data Table
+# ---------- Data Table Headers ---------------------------------------------------
 
 frame_website_header = tk.Frame(master=window)
 frame_website_header.grid(row=3, column=0, padx=5, pady=5)
@@ -148,6 +168,8 @@ lbl_password_header = tk.Label(
     text="Password",
 )
 lbl_password_header.pack(padx=5, pady=5)
+
+# ---------- Data Table ---------------------------------------------------
 
 r = 4
 for row in login_data.login_data:
@@ -182,6 +204,21 @@ for row in login_data.login_data:
         text=row["password"]
     )
     lbl_password_data.grid()
+
+    # Delete button
+    frame_delete_button = tk.Frame(master=window)
+    frame_delete_button.grid(row=r, column=3)
+
+    btn_delete = tk.Button(
+    master=frame_delete_button,
+    text="Delete",
+    relief=tk.RAISED,
+    borderwidth=5,
+    width=15,
+    height=1,
+    command=delete
+    )
+    btn_delete.pack(side=tk.LEFT)
 
     r = r + 1
 
